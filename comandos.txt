@@ -1,0 +1,11 @@
+# crear entorno 
+python -m venv saa
+
+# activar entorno
+saa\Scripts\activate
+
+# desactivar entorno
+deactivate
+
+# instalar paquetes
+python -m pip install 
