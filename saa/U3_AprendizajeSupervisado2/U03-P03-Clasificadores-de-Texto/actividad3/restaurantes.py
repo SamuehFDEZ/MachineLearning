@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #### apartado a)
 import pandas as pd
-df = pd.read_csv("reseñas_restaurantes.csv", sep=";")
+df = pd.read_csv("../../U03_Recursos/U03_P03_Texto/reseñas_restaurantes.csv", sep=";")
 print(df.info())
 del(df['puntuación'])       # Borramos puntuaciones
 datos = [tuple(x) for x in df.values] # Transformar una lista de tuplas
@@ -18,7 +18,7 @@ from tqdm import tqdm
 from nltk.tokenize import word_tokenize # Tokeniza palabras
 from nltk.corpus import stopwords    # stop-words, palabras comunes
 nltk.download('punkt')              # Es un tokenizer de nltk en inglés y español
-nltk.download('punkt_tab')          # Lo pide
+nltk.download('stopwords')
 
 spanish_sw = set(stopwords.words('spanish'))
 
