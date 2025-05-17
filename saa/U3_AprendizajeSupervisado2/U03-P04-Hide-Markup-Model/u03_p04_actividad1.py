@@ -2,8 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-
-fichero_audio = r"../U03_Recursos/U03_P04_Audios/0-SAMARTLOP-0.m4a"
+import os
+fichero_audio = r"U03_P04_Audios/wav/0-SAMARTLOP-0.wav"
 frecuencia, audio = wavfile.read(fichero_audio)
 duracion = round(audio.shape[0] / float(frecuencia), 3)
 print ('\nMuestras:', audio.shape)
@@ -100,7 +100,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 ########## PARÁMETROS PARA DEFINIR EL DATASET ##########
-carpeta = "./audios/"
+carpeta = "U03_P04_Audios/wav/"
 n_caracteristicas = 10         # Num. de características mel de cada trozo de audio
 tama_caracteristicas = 10        # Cantidad de datos de cada característica
 valor_imputado = 0.1           # Mecanismo de seguridad para no alimentar HMM con valores NaN
@@ -236,7 +236,7 @@ def informe(y_test, y_pred, mostrar_grafico=True):
 
 # ===== PASO 1: Definir el Dataset =====
 print("===== PASO 1: Definir el Dataset =====")
-x_train, y_train, x_test, y_test, datos = definir_dataset()
+x_train, y_train, x_test, y_test, datos = definir_dataset(ruta_audios=carpeta)
 print("Datos de entrenamiento:", len(x_train))
 print("Datos de test:", len(x_test))
 print("Diccionario de datos contiene datos de:", datos.keys())
@@ -256,8 +256,8 @@ print("Entrenamiento realizado...")
 # ===== PASO 3: Usar el modelo para predecir =====
 print("\n===== PASO 3: Usar el modelo para predecir =====")
 # Leer modelo de disco si queremos usarlo tras crearlo
-with open("u03_p04_modelo_hmm.pkl", "rb") as fichero:
-    hmm = pickle.load(fichero)
+with open("modelo_aprendido.pkl", "rb") as fichero:
+    modelo_cargado = pickle.load(fichero)
 ficheros = sorted(os.listdir(carpeta))
 tot_test = 0
 tot_train = 0
@@ -266,13 +266,13 @@ m = len(x_train)
 pred_test = []
 pred_train = []
 for i in range(m):
-    y_pred = hacer_prediccion(x_train[i], hmm)
+    y_pred = hacer_prediccion(x_train[i], modelo_cargado)
     if y_pred == y_train[i]:
         tot_train += 1
     pred_train.append(y_pred)
 
 for i in range(n):
-    y_pred = hacer_prediccion(x_test[i], hmm)
+    y_pred = hacer_prediccion(x_test[i], modelo_cargado)
     if y_pred == y_test[i]:
         tot_test += 1
     pred_test.append(y_pred)
